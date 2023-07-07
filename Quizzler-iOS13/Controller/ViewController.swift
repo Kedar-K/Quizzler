@@ -12,6 +12,7 @@ import AVFoundation
 
 class ViewController: UIViewController {
     
+    @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet weak var falseButton: UIButton!
     @IBOutlet weak var trueButton: UIButton!
     @IBOutlet weak var progressBar: UIProgressView!
@@ -27,11 +28,11 @@ class ViewController: UIViewController {
     }
 
     @IBAction func answerButtonPressed(_ sender: UIButton) {
-        let userAnswer = sender.currentTitle!
+//        let userAnswer = sender.currentTitle!
 //        let actualAnswer = quiz[questionNumber].answer
-        let answer = quizBrain.checkAnswer(userAnswer)
+//        let answer = quizBrain.checkAnswer(userAnswer)
             
-        if answer    {
+        if quizBrain.checkAnswer(sender.currentTitle!)    {
             sender.backgroundColor = UIColor.green
             print("Right")
         }else{
@@ -42,7 +43,7 @@ class ViewController: UIViewController {
         
         quizBrain.nextQuestion()
         
-        timer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(self.updateUI), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(self.updateUI), userInfo: nil, repeats: true)
 
     }
     
@@ -51,6 +52,7 @@ class ViewController: UIViewController {
         trueButton.backgroundColor = UIColor.clear
         falseButton.backgroundColor = UIColor.clear
         progressBar.progress = quizBrain.getProgress()
+        scoreLabel.text = "Score \(quizBrain.getScore())"
     }
     
 }
