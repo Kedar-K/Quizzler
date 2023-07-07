@@ -1,24 +1,14 @@
 //
-//  ViewController.swift
+//  QuizBrain.swift
 //  Quizzler-iOS13
 //
-//  Created by Angela Yu on 12/07/2019.
-//  Copyright © 2019 The App Brewery. All rights reserved.
+//  Created by Kedar Kodgire on 08/07/23.
+//  Copyright © 2023 The App Brewery. All rights reserved.
 //
 
-import UIKit
-import AVFoundation
+import Foundation
 
-
-class ViewController: UIViewController {
-    
-    @IBOutlet weak var falseButton: UIButton!
-    @IBOutlet weak var trueButton: UIButton!
-    @IBOutlet weak var progressBar: UIProgressView!
-    @IBOutlet weak var questionLabel: UILabel!
-    var timer = Timer()
-    
-    
+struct QuizBrain {
     let quiz = [
                 Question(q: "A slug's blood is green.", a: "True"),
                 Question(q: "Approximately one quarter of human bones are in the feet.", a: "True"),
@@ -36,41 +26,27 @@ class ViewController: UIViewController {
     
     var questionNumber = 0
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        updateUI()
-    }
-
-    @IBAction func answerButtonPressed(_ sender: UIButton) {
-        let userAnswer = sender.currentTitle
-        let actualAnswer = quiz[questionNumber].answer
-            
-        if userAnswer == actualAnswer {
-            sender.backgroundColor = UIColor.green
-            print("Right")
+    func checkAnswer(_ userAnswer: String) -> Bool {
+        if userAnswer == quiz[questionNumber].answer {
+            return true
         }else{
-            sender.backgroundColor = UIColor.red
-
-            print("Wrong")
+            return false
         }
-        
+    }
+    
+    func getQuestionText() -> String {
+        return quiz[questionNumber].text
+    }
+    
+    func getProgress() -> Float {
+            return Float(questionNumber) / Float(quiz.count)
+        }
+    
+    mutating func nextQuestion() -> Void {
         if questionNumber < quiz.count - 1 {
             questionNumber += 1
         }else{
             questionNumber = 0
         }
-        
-        timer = Timer.scheduledTimer(timeInterval: 1.5, target: self, selector: #selector(self.updateUI), userInfo: nil, repeats: true)
-
     }
-    
-    @objc func updateUI(){
-        questionLabel.text = quiz[questionNumber].text
-        trueButton.backgroundColor = UIColor.clear
-        falseButton.backgroundColor = UIColor.clear
-
-    }
-    
 }
-
